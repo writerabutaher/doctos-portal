@@ -1,16 +1,33 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import { AuthContext } from '../../Contexts/AuthProvider';
 
 const Navbar = () => {
+
+    const { user, logOut } = useContext(AuthContext);
+
+    const handleLogOut = () => {
+        logOut()
+            .then(() => { })
+            .catch(err => console.log(err));
+    }
 
     const navItems =
         <>
             <li><NavLink className='btn btn-ghost' to={'/home'}>Home</NavLink></li>
-            <li><NavLink className='btn btn-ghost' to={'/about'}>About</NavLink></li>
+            {/* <li><NavLink className='btn btn-ghost' to={'/about'}>About</NavLink></li> */}
             <li><NavLink className='btn btn-ghost' to={'/appointment'}>Appointment</NavLink></li>
-            <li><NavLink className='btn btn-ghost' to={'/reviews'}>Reviews</NavLink></li>
-            <li><NavLink className='btn btn-ghost' to={'/contact'}>Contact Us</NavLink></li>
-            <li><NavLink className='btn btn-ghost' to={'/login'}>Login</NavLink></li>
+            {/* <li><NavLink className='btn btn-ghost' to={'/reviews'}>Reviews</NavLink></li> */}
+            {/* <li><NavLink className='btn btn-ghost' to={'/contact'}>Contact Us</NavLink></li> */}
+            {
+                user?.uid ?
+                    <>
+                        <li><NavLink className='btn btn-ghost' to={'/dashboard'}>DashBoard</NavLink></li>
+                        <li><button onClick={handleLogOut} className='btn btn-ghost'>LogOut</button></li>
+                    </>
+                    :
+                    <li><NavLink className='btn btn-ghost' to={'/login'}>Login</NavLink></li>
+            }
         </>
 
     return (
